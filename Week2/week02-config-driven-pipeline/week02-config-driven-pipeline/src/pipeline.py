@@ -25,7 +25,6 @@ def load_config(path):
     Must raise ValueError naming the specific missing key if REQUIRED_KEYS
     are not all present. Do not let this fail with a bare KeyError later.
     """
-    # TODO: implement
     with open(path,'r') as file :
         data = yaml.safe_load(file)
         for key in REQUIRED_KEYS :
@@ -43,13 +42,21 @@ def load_transactions(path, fmt):
     (str or float) and "is_fraud" (str "True"/"False" or bool).
     Raise ValueError for any fmt other than "csv" or "json".
     """
-    # TODO: implement
+    if fmt not in ("csv","json") :
+        raise ValueError(f"Unsupported format:{fmt}")
     with open(path,'r') as file :
         if fmt == "csv":
             reader = csv.DictReader(file)
             data = list(reader)
         elif fmt == "json" :
             data = json.load(file)
+    if not isinstance(data,list) :
+        raise ValueError("Data is not a list")
+    for i in data :
+        if not isinstance(i,dict) :
+            raise ValueError("Data is not a list of dict")
+        if "amount" not in i or "is_fraud" not in i :
+            raise ValueError("Data is not a list of dict with amount and is_fraud")
     filtered_data = [{'amount':tx['amount'] , 'is_fraud' : tx['is_fraud']} for tx in data]
     return filtered_data
     raise NotImplementedError("load_transactions is not implemented yet")
@@ -61,11 +68,10 @@ def run_pipeline(config):
     n_high_value, high_value_threshold), and write them as JSON to
     config["output_path"]. Return the report dict as well.
     """
-    # TODO: implement
     data = load_transactions(config['input_path'],config['input_format'])
     n = len(data)
     total_amount = sum(float(r["amount"]) for r in data)
-    n_fraud = sum(1 for r in data if r["is_fraud"].lower() == "true")
+    n_fraud = sum(1 for r in data if str(r["is_fraud"]).lower() == "true")
     n_high_value = sum(1 for r in data if float(r["amount"]) > config['high_value_threshold'])
     report = {
         "n_transactions": n,

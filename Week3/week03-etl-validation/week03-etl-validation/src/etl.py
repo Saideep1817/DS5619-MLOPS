@@ -54,8 +54,53 @@ def run_etl(config):
     Return the validation_report dict as well as writing it to disk.
     """
     # TODO: implement
-    raise NotImplementedError
+    # Extract 
+    raw_data = extract(config["input_path"])
 
+    #Validate
+    suite = build_expectation_suite()
+    validation_report = {"expectations" : []}
+    all_violations = []
+    for exp_func , kwargs in suite :
+        violations = exp_func(raw_data , **kwargs)
+        all_violations.extend(violations)
+        expect_name =  exp_func.__name__
+        validation_report["expectations"].append({
+            "expectation":expect_name,
+            "column":kwargs["column"],
+            "n_violations":len(violations),
+            "row_indices" : [
+                v.row_index for v in violations
+            ],
+        })
+    
+    # Transform
+    bad_rows = set()
+    for violation in all_violations :
+        bad_rows.add(violation.row_index)
+
+    clean_rows = []
+    quarantined_rows = []
+    for i , row in enumerate(raw_data):
+        if i in bad_rows :
+            quarantined_rows.append(row)
+        else :
+            clean_rows.append(row)
+    
+    # load
+    with open(config["clean_output_path"] , "w" , newline="") as f :
+        writer = csv.DictWriter(f , fieldnames = raw_data[0].keys())
+        writer.writeheader()
+        writer.writerows(clean_rows)
+    
+    with open(config["quarantine_output_path"] , "w" , newline="") as f :
+        writer = csv.DictWriter(f , fieldnames = raw_data[0].keys())
+        writer.writeheader()
+        writer.writerows(quarantined_rows)
+    
+    with open(config["report_output_path"] , "w" , newline="") as f :
+        json.dump(validation_report , f , indent=2)
+    return validation_report
 
 def main():
     parser = argparse.ArgumentParser()

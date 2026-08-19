@@ -93,14 +93,17 @@ def expect_column_unique(rows, column):
     """
     # TODO: implement
     violations = []
+    seen = set()
     for i , row in enumerate(rows):
         value = row[column]
-        if _is_null(value):
+        if value in seen :
             violations.append(Violation(
-                expectation="expect_column_not_null",
+                expectation = "expect_column_unique",
                 column = column ,
-                row_index = i ,
-                detail = f"{value} is not allowed to null"
+                row_index = i,
+                detail = f"{value} is not unique"
             ))
+        else:
+            seen.add(value)
     return violations
     raise NotImplementedError

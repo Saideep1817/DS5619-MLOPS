@@ -138,6 +138,37 @@ def build_features(rows):
     Return: list of feature row dicts, one per card_id, in any order.
     """
     # TODO: implement
+    groups = {}
+    for row in rows :
+        card_id = row["card_id"]
+        if card_id not in groups:
+            groups[card_id] = []
+        groups[card_id].append(row)
+
+    feature_rows = []
+    for card_id , card_rows in groups.items():
+        amounts = []
+        for row in card_rows:
+            if "country_code" in row:
+                amount = float(row["amount_minor_units"]) / 100
+            else:
+                amount = float(row["amount"])
+            amounts.append(amount)
+        txn_count = len(card_rows)
+        avg_amount = round(sum(amounts) / txn_count, 2)
+        max_amount = round(max(amounts), 2)
+        pct_card_present = round(sum(1 for row in card_rows if row["card_present"] == "True") / txn_count, 3)
+        event_time = max(row["event_time"] for row in card_rows)
+        feature_row = {
+            "card_id": card_id,
+            "txn_count": txn_count,
+            "avg_amount": avg_amount,
+            "max_amount": max_amount,
+            "pct_card_present": pct_card_present,
+            "event_time": event_time
+        }
+        feature_rows.append(feature_row)
+    return feature_rows
     raise NotImplementedError
 
 

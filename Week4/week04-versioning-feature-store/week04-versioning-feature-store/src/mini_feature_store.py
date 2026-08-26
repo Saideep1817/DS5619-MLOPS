@@ -84,10 +84,13 @@ def snapshot_raw_version(input_path, registry_dir):
         for version_id in os.listdir(raw_dir):
             manifest_path = os.path.join(raw_dir, version_id, "manifest.json")
             if os.path.isfile(manifest_path):
-                with open(manifest_path, "r") as f:
-                    manifest = json.load(f)
-                    if manifest.get("content_hash") == file_hash:
-                        return manifest.get("version_id")
+                try:
+                    with open(manifest_path, "r") as f:
+                        manifest = json.load(f)
+                except json.JSONDecodeError:
+                    continue
+                if manifest.get("content_hash") == file_hash:
+                    return manifest.get("version_id")
     version_id = _next_version_id(raw_dir)
     version_dir = os.path.join(raw_dir, version_id)
     os.makedirs(version_dir, exist_ok=True)
@@ -158,7 +161,7 @@ def build_features(rows):
         avg_amount = round(sum(amounts) / txn_count, 2)
         max_amount = round(max(amounts), 2)
         pct_card_present = round(sum(1 for row in card_rows if row["card_present"] == "True") / txn_count, 3)
-        event_time = max(row["event_time"] for row in card_rows)
+        event_time = max(row["timestamp"] for row in card_rows)
         feature_row = {
             "card_id": card_id,
             "txn_count": txn_count,
@@ -199,6 +202,23 @@ def register_feature_group(name, feature_rows, source_version_id, registry_dir, 
       5. Return fg_version_id (str).
     """
     # TODO: implement
+    feature_group_dir = os.path.join(registry_dir, "feature_groups", name)
+    fg_version_id = _next_version_id(feature_group_dir)
+    os.makedirs(os.path.join(feature_group_dir, fg_version_id), exist_ok=True)
+    with open(os.path.join(feature_group_dir, fg_version_id, "features.json"), "w") as f:
+        json.dump(feature_rows, f, indent=2)
+    manifest = {
+        "feature_group_version_id": fg_version_id,
+        "name": name,
+        "source_raw_version_id": source_version_id,
+        "transform_version": transform_version,
+        "schema": sorted(feature_rows[0].keys()) if feature_rows else [],
+        "row_count": len(feature_rows),
+        "created_at": _now()
+    }
+    with open(os.path.join(feature_group_dir, fg_version_id, "manifest.json"), "w") as f:
+        json.dump(manifest, f, indent=2)
+    return fg_version_id   
     raise NotImplementedError
 
 
@@ -221,4 +241,15 @@ def get_lineage(name, fg_version_id, registry_dir):
     fine — don't catch it) if either manifest is missing.
     """
     # TODO: implement
+    feature_group_manifest_path = os.path.join(registry_dir, "feature_groups", name, fg_version_id, "manifest.json")
+    with open(feature_group_manifest_path, "r") as f:
+        feature_group_manifest = json.load(f)
+    source_raw_version_id = feature_group_manifest["source_raw_version_id"]
+    raw_source_manifest_path = os.path.join(registry_dir, "raw_versions", source_raw_version_id, "manifest.json")
+    with open(raw_source_manifest_path, "r") as f:
+        raw_source_manifest = json.load(f)
+    return {
+        "feature_group": feature_group_manifest,
+        "raw_source": raw_source_manifest
+    }   
     raise NotImplementedError

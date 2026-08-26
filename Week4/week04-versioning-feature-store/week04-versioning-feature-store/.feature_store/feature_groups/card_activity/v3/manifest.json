@@ -1,5 +1,5 @@
 {
-  "feature_group_version_id": "v1",
+  "feature_group_version_id": "v3",
   "name": "card_activity",
   "source_raw_version_id": "v1",
   "transform_version": "v1",
@@ -12,5 +12,5 @@
     "txn_count"
   ],
   "row_count": 381,
-  "created_at": "2026-08-26T14:10:00.255144+00:00"
+  "created_at": "2026-08-26T14:10:25.611782+00:00"
 }

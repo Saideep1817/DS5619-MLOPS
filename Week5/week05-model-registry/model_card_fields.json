@@ -1,0 +1,6 @@
+{
+  "intended_use": "Flags candidate fraudulent card transactions for manual review.",
+  "training_data": "Trained on the card_activity feature group from Week 4 using the available transaction data.",
+  "limitations": "A simple amount-threshold classifier cannot reliably detect low-amount fraud or fraud patterns that are not associated with transaction amount.",
+  "ethical_considerations": "False positives may inconvenience legitimate customers, while false negatives allow fraudulent transactions to pass through and cause financial loss."
+}

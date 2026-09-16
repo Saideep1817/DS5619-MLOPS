@@ -19,7 +19,7 @@ Candidate_b was the one who reached production as it satisfied both the conditio
 
 <!-- What would you need to add to promote_model's gate if you also wanted
      to block promotion of a model trained on stale (e.g. >30-day-old)
-     feature data? -->
+     feature data? -->12.
      We could add an additional gate in promote_model() that checks the age of the feature data used to train the model. The registry would compare the feature data's timestamp with the current date. If the feature data is more than 30 days old, the promotion would be blocked and the model would not be allowed to move to Production. This helps ensure that only models trained on sufficiently recent feature data are deployed.It is possible only when we add feature data creation in manifest.json at register_model function.
 
 ## Scaling the gate to 40 candidates

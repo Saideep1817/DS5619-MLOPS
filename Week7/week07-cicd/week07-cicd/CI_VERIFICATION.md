@@ -10,16 +10,16 @@ Paste the URL of a successful run of all three jobs (Actions tab -> click
 the run -> copy the URL):
 
 ```
-TODO
+https://github.com/Saideep1817/DS5619-MLOPS/actions/runs/36131067969
 ```
 
 ## Job summary
 
 For each job, note pass/fail and how long it took:
 
-- `lint`: TODO
-- `unit-test`: TODO
-- `integration-test`: TODO
+- `lint`: PASSED, ~8 seconds
+- `unit-test`: PASSED, ~7 seconds
+- `integration-test`: PASSED, ~15 seconds
 
 ## What broke on the way there (optional but useful)
 

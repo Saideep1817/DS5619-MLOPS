@@ -1,0 +1,204 @@
+{
+  "recall_threshold": 0.9,
+  "category_stats": {
+    "Three-wheeler": {
+      "total": 17,
+      "detected": 15,
+      "recall": 0.8824
+    },
+    "Two-wheeler": {
+      "total": 12,
+      "detected": 9,
+      "recall": 0.75
+    },
+    "Mini-bus": {
+      "total": 15,
+      "detected": 14,
+      "recall": 0.9333
+    },
+    "Bicycle": {
+      "total": 22,
+      "detected": 18,
+      "recall": 0.8182
+    },
+    "LCV": {
+      "total": 9,
+      "detected": 9,
+      "recall": 1.0
+    },
+    "Sedan": {
+      "total": 13,
+      "detected": 13,
+      "recall": 1.0
+    },
+    "Hatchback": {
+      "total": 23,
+      "detected": 23,
+      "recall": 1.0
+    },
+    "MUV": {
+      "total": 21,
+      "detected": 21,
+      "recall": 1.0
+    },
+    "Other": {
+      "total": 17,
+      "detected": 15,
+      "recall": 0.8824
+    },
+    "Tempo-traveller": {
+      "total": 22,
+      "detected": 21,
+      "recall": 0.9545
+    },
+    "SUV": {
+      "total": 16,
+      "detected": 15,
+      "recall": 0.9375
+    },
+    "Truck": {
+      "total": 20,
+      "detected": 19,
+      "recall": 0.95
+    },
+    "Bus": {
+      "total": 14,
+      "detected": 13,
+      "recall": 0.9286
+    },
+    "Van": {
+      "total": 15,
+      "detected": 15,
+      "recall": 1.0
+    }
+  },
+  "underperforming_categories": [
+    {
+      "category": "Two-wheeler",
+      "recall": 0.75
+    },
+    {
+      "category": "Bicycle",
+      "recall": 0.8182
+    },
+    {
+      "category": "Three-wheeler",
+      "recall": 0.8824
+    },
+    {
+      "category": "Other",
+      "recall": 0.8824
+    }
+  ],
+  "adversarial": {
+    "eps_values": [
+      0,
+      10,
+      20,
+      30,
+      40
+    ],
+    "recall_by_eps": {
+      "0": {
+        "Three-wheeler": 0.8824,
+        "Two-wheeler": 0.75,
+        "Mini-bus": 0.9333,
+        "Bicycle": 0.8182,
+        "LCV": 1.0,
+        "Sedan": 1.0,
+        "Hatchback": 1.0,
+        "MUV": 1.0,
+        "Other": 0.8824,
+        "Tempo-traveller": 0.9545,
+        "SUV": 0.9375,
+        "Truck": 0.95,
+        "Bus": 0.9286,
+        "Van": 1.0
+      },
+      "10": {
+        "Three-wheeler": 0.8235,
+        "Two-wheeler": 0.75,
+        "Mini-bus": 0.8667,
+        "Bicycle": 0.6364,
+        "LCV": 1.0,
+        "Sedan": 0.7692,
+        "Hatchback": 0.913,
+        "MUV": 0.9048,
+        "Other": 0.8235,
+        "Tempo-traveller": 0.9091,
+        "SUV": 0.875,
+        "Truck": 0.85,
+        "Bus": 0.7857,
+        "Van": 0.8667
+      },
+      "20": {
+        "Three-wheeler": 0.7059,
+        "Two-wheeler": 0.5833,
+        "Mini-bus": 0.6667,
+        "Bicycle": 0.5,
+        "LCV": 0.7778,
+        "Sedan": 0.7692,
+        "Hatchback": 0.7826,
+        "MUV": 0.8095,
+        "Other": 0.7059,
+        "Tempo-traveller": 0.7727,
+        "SUV": 0.6875,
+        "Truck": 0.8,
+        "Bus": 0.6429,
+        "Van": 0.6667
+      },
+      "30": {
+        "Three-wheeler": 0.5882,
+        "Two-wheeler": 0.4167,
+        "Mini-bus": 0.4,
+        "Bicycle": 0.2727,
+        "LCV": 0.4444,
+        "Sedan": 0.6154,
+        "Hatchback": 0.6522,
+        "MUV": 0.6667,
+        "Other": 0.5882,
+        "Tempo-traveller": 0.6818,
+        "SUV": 0.625,
+        "Truck": 0.6,
+        "Bus": 0.5,
+        "Van": 0.6667
+      },
+      "40": {
+        "Three-wheeler": 0.4706,
+        "Two-wheeler": 0.3333,
+        "Mini-bus": 0.4,
+        "Bicycle": 0.1364,
+        "LCV": 0.2222,
+        "Sedan": 0.3846,
+        "Hatchback": 0.6087,
+        "MUV": 0.5238,
+        "Other": 0.4118,
+        "Tempo-traveller": 0.6818,
+        "SUV": 0.5,
+        "Truck": 0.5,
+        "Bus": 0.3571,
+        "Van": 0.4667
+      }
+    },
+    "report_eps": 20,
+    "most_fragile": [
+      {
+        "category": "Van",
+        "recall_drop": 0.3333
+      },
+      {
+        "category": "Bicycle",
+        "recall_drop": 0.3182
+      },
+      {
+        "category": "Bus",
+        "recall_drop": 0.2857
+      }
+    ],
+    "lowest_recall_under_attack": [
+      "Bicycle",
+      "Two-wheeler",
+      "Bus"
+    ]
+  }
+}
